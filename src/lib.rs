@@ -2,6 +2,8 @@
 //! radix sort, but replacing its simple 'insert at hash index' logic
 //! with some good old  data structures
 
+#![no_std]
+
 mod tree;
 
 use tree::Tree;
@@ -11,23 +13,19 @@ use tree::Tree;
 /// slice pointer, which is used to construct the sorted array tree.
 pub type Keyer<T, K: AsRef<[u8]>> = fn(&T) -> K;
 
-pub fn sort<T, K: AsRef<[u8]>>(list: &[T], keyer: Keyer<T, K>) -> &[T] {
+pub fn sort<'f, T, K: AsRef<[u8]>, R>(list: &'f [T], keyer: Keyer<T, K>) -> R
+where
+    R: FromIterator<&'f T>,
+{
     let mut tree = Tree::<&[u8], usize, 256>::new();
 
     list.iter()
         .map(|el| keyer(el))
         .enumerate()
-        .filter_map(|(i, k)| {
-            tree.add(k.as_ref(), i)
-                .map_err(|e| eprintln!("failed to add item to tree with error: '{}'; exiting;", e))
-                .ok()
-        })
+        .filter_map(|(i, k)| tree.add(k.as_ref(), i).ok())
         .collect::<()>();
 
-    tree.into_iter()
-        .map(|i| list[i])
-        .collect::<Vec<T>>()
-        .as_slice()
+    tree.into_iter().map(|i| &list[i]).collect()
 }
 
 #[cfg(test)]

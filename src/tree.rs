@@ -1,6 +1,6 @@
-use std::marker::PhantomData as Phantom;
-use std::result::Result;
-use std::slice::Iter;
+use core::marker::PhantomData as Phantom;
+use core::result::Result;
+use core::slice::Iter;
 
 /// A hashed array tree, where each level N represents the key's Nth
 /// most significant byte.
