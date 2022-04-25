@@ -17,8 +17,7 @@ pub(crate) struct Node<'n, V, const L: usize> {
 
 impl<K: AsRef<[u8]>, V, const L: usize> Tree<'_, K, V, L> {
     /// Initialise an empty tree.
-    #[inline(always)]
-    pub const fn new() -> Self {
+    pub fn new() -> Self {
         Self(
             Node {
                 leaves: None,
