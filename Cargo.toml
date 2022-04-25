@@ -1,8 +1,6 @@
 [package]
 name = "radishsort"
+description = """An improved radix sort, using modified hashed array trees (HATs).
+Linear time like radix sort, quasi-linear space quasi-like classic counting sort."""
 version = "0.1.0"
 edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
